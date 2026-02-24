@@ -3,6 +3,7 @@ import path from 'node:path';
 import { ping, withClient } from './db';
 import { ingestFile } from './ingest/ingest';
 import { generateJsonl } from './ingest/generate';
+import { searchDb } from './search/adapter';
 
 async function dbInit() {
   // best-effort: run the init SQL directly as well (useful outside docker entrypoint).
@@ -40,7 +41,7 @@ async function bench() {
 
 async function main() {
   const cmd = process.argv[2];
-  if (!cmd) throw new Error('usage: tsx src/cli.ts <db:init|ingest|bench|gen>');
+  if (!cmd) throw new Error('usage: tsx src/cli.ts <db:init|ingest|bench|gen|search>');
 
   await ping();
 
@@ -68,6 +69,20 @@ async function main() {
     const count = Number(process.argv[4] ?? '50000');
     generateJsonl(outPath, count);
     console.log(`ok: generated ${count} docs at ${outPath}`);
+    return;
+  }
+
+  if (cmd === 'search') {
+    const q = process.argv[3] ?? '';
+    const kIdx = process.argv.indexOf('--k');
+    const k = kIdx >= 0 ? Number(process.argv[kIdx + 1] ?? '10') : 10;
+
+    const hits = await searchDb(q, { k });
+    for (const h of hits) {
+      const label = h.externalId ?? h.id;
+      const title = h.title ? `\t${h.title}` : '';
+      console.log(`${label}\t${h.score.toFixed(6)}${title}`);
+    }
     return;
   }
 

@@ -7,4 +7,6 @@ export * from './searchIndex.js'
 export * from './tokenize.js'
 export * from './build.js'
 export * from './score.js'
+export * from './db.js'
+export * from './search/adapter.js'
 
