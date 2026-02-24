@@ -1,24 +1,31 @@
 {
   "name": "websearch",
-  "private": true,
-  "version": "0.0.0",
-  "type": "commonjs",
+  "version": "1.0.0",
+  "description": "Node mini search engine core: inverted index + trie + tf-idf + topK",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "start": "node dist/cli.js",
-    "dev": "tsx src/cli.ts",
-    "db:init": "tsx src/cli.ts db:init",
-    "ingest": "tsx src/cli.ts ingest",
-    "bench": "tsx src/cli.ts bench"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "bench": "npm run build && node --enable-source-maps dist/scripts/bench.js",
+    "bench:dev": "node scripts/bench.ts"
   },
-  "dependencies": {
-    "pg": "^8.11.5"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RaphOrg/websearch.git"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RaphOrg/websearch/issues"
+  },
+  "homepage": "https://github.com/RaphOrg/websearch#readme",
   "devDependencies": {
-    "@types/node": "^20.11.30",
-    "@types/pg": "^8.11.10",
-    "tsx": "^4.19.2",
-    "typescript": "^5.6.3"
+    "@types/node": "^25.3.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
   }
 }
-
