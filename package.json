@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "test": "node -e \"console.log('no tests yet')\"",
     "start": "node dist/cli.js",
     "dev": "tsx src/cli.ts",
     "db:init": "tsx src/cli.ts db:init",
