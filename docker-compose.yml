@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: websearch-postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-websearch}
+      POSTGRES_USER: ${POSTGRES_USER:-websearch}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-websearch}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:
+
